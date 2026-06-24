@@ -1,0 +1,6 @@
+{
+  "name": "Happyfun.zone",
+  "description": "The personal homepage of Jim Oler, featuring a responsive, high-performance minimalist retro terminal (TUI) experience.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
