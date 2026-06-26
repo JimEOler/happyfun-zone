@@ -107,6 +107,40 @@ export default function App() {
     setDecrypting(true);
   };
 
+  // Secret Authentication States
+  const [secretUserId, setSecretUserId] = useState('');
+  const [secretPassword, setSecretPassword] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authError, setAuthError] = useState('');
+
+  const handleAuthSubmit = (e: any) => {
+    e.preventDefault();
+    handleActionClick();
+    const uid = secretUserId.trim().toLowerCase();
+    const pwd = secretPassword.trim();
+    
+    if ((uid === 'joler' && pwd === 'retro') || (uid === 'admin' && pwd === 'password')) {
+      setIsAuthenticated(true);
+      setAuthError('');
+      playClickSound(880, 0.15, 'sine');
+      setTimeout(() => playClickSound(1046.5, 0.2, 'sine'), 100);
+    } else {
+      setAuthError('ERROR: INVALID ACCESS CREDENTIALS');
+      playClickSound(150, 0.3, 'sawtooth');
+      setSecretPassword('');
+    }
+  };
+
+  const handleLogout = () => {
+    handleActionClick();
+    setIsAuthenticated(false);
+    setDecryptProgress(0);
+    setDecrypting(false);
+    setDecrypted(false);
+    setSecretUserId('');
+    setSecretPassword('');
+  };
+
   // Active theme configuration
   const theme = THEMES[themeId] || THEMES['green-matrix'];
 
@@ -984,23 +1018,85 @@ export default function App() {
                     </div>
 
                     <div className="space-y-4">
-                      {!decrypted && !decrypting && (
-                        <div className="p-6 text-center border-2 border-dashed border-current/25 rounded space-y-4 bg-black/10">
-                          <h3 className="text-base font-bold font-display uppercase tracking-widest text-red-500">■ ENCRYPTED DATA CORRIDOR</h3>
-                          <p className="text-xs max-w-md mx-auto opacity-75">
-                            Warning: Unauthorized extraction of cryptographic records from this server is prohibited. Authenticate terminal access key.
-                          </p>
+                      {!isAuthenticated && (
+                        <form onSubmit={handleAuthSubmit} className="max-w-sm mx-auto p-6 border-2 bevel-out bg-black/15 space-y-4" id="secret-auth-form">
+                          <h3 className="text-center text-sm font-bold font-display uppercase tracking-widest text-red-500 border-b border-current/25 pb-2">
+                            ■ SYSTEM SECURE ACCESS PROMPT
+                          </h3>
+                          
+                          {authError && (
+                            <div className="p-2 border border-red-500/50 bg-red-950/20 text-[11px] text-red-500 font-bold text-center animate-pulse">
+                              {authError}
+                            </div>
+                          )}
+
+                          <div className="space-y-1 text-xs">
+                            <label className="block opacity-75 font-bold">USER ID:</label>
+                            <input
+                              type="text"
+                              value={secretUserId}
+                              onChange={(e) => setSecretUserId(e.target.value)}
+                              className={`w-full px-2 py-1.5 bg-black/35 font-mono text-xs outline-none border focus:ring-0 ${theme.isDark ? 'border-current/20 focus:border-current' : 'border-current'}`}
+                              placeholder="Enter UID..."
+                              required
+                              id="secret-auth-uid"
+                              autoComplete="off"
+                            />
+                          </div>
+
+                          <div className="space-y-1 text-xs">
+                            <label className="block opacity-75 font-bold">PASSWORD:</label>
+                            <input
+                              type="password"
+                              value={secretPassword}
+                              onChange={(e) => setSecretPassword(e.target.value)}
+                              className={`w-full px-2 py-1.5 bg-black/35 font-mono text-xs outline-none border focus:ring-0 ${theme.isDark ? 'border-current/20 focus:border-current' : 'border-current'}`}
+                              placeholder="Enter Password..."
+                              required
+                              id="secret-auth-pwd"
+                            />
+                          </div>
+
                           <button
-                            onClick={startDecryption}
-                            className="px-4 py-2 border-2 bevel-out font-bold text-xs hover:translate-x-0.5 active:translate-y-0.5 active:bg-black/25 active:bevel-in transition-all cursor-pointer font-display"
-                            id="decrypt-btn"
+                            type="submit"
+                            className="w-full py-2 border-2 bevel-out font-bold text-xs hover:translate-x-0.5 active:translate-y-0.5 active:bg-black/25 active:bevel-in transition-all cursor-pointer font-display"
+                            id="secret-auth-submit-btn"
                           >
-                            [ INITIATE DECRYPTION ROUTINE ]
+                            [ AUTHENTICATE INTERACTIVE SIGN-ON ]
                           </button>
+
+                          <p className="text-[10px] opacity-40 text-center leading-relaxed">
+                            Hint: Authorized login: <span className="font-bold">joler</span> / <span className="font-bold">retro</span>
+                          </p>
+                        </form>
+                      )}
+
+                      {isAuthenticated && !decrypted && !decrypting && (
+                        <div className="p-6 text-center border-2 border-dashed border-current/25 rounded space-y-4 bg-black/10">
+                          <h3 className="text-base font-bold font-display uppercase tracking-widest text-emerald-400">■ ENCRYPTED DATA CORRIDOR</h3>
+                          <p className="text-xs max-w-md mx-auto opacity-75">
+                            Terminal authenticated. Security logs are ready for decryption.
+                          </p>
+                          <div className="flex gap-2 justify-center">
+                            <button
+                              onClick={startDecryption}
+                              className="px-4 py-2 border-2 bevel-out font-bold text-xs hover:translate-x-0.5 active:translate-y-0.5 active:bg-black/25 active:bevel-in transition-all cursor-pointer font-display"
+                              id="decrypt-btn"
+                            >
+                              [ INITIATE DECRYPTION ROUTINE ]
+                            </button>
+                            <button
+                              onClick={handleLogout}
+                              className="px-4 py-2 border-2 bevel-out font-bold text-xs hover:translate-x-0.5 active:translate-y-0.5 active:bg-black/25 active:bevel-in transition-all cursor-pointer font-display text-red-500"
+                              id="secret-logout-btn"
+                            >
+                              [ SIGN OUT ]
+                            </button>
+                          </div>
                         </div>
                       )}
 
-                      {decrypting && (
+                      {isAuthenticated && decrypting && (
                         <div className="p-6 border-2 border-current/20 rounded bg-black/20 space-y-4">
                           <div className="flex justify-between text-xs font-bold font-display">
                             <span className="animate-pulse">DECRYPTING CLASSIFIED RECORDS...</span>
@@ -1022,7 +1118,7 @@ export default function App() {
                         </div>
                       )}
 
-                      {decrypted && (
+                      {isAuthenticated && decrypted && (
                         <div className="space-y-6 animate-fadeIn">
                           <div className="p-4 border-2 border-emerald-500/30 rounded bg-emerald-950/10 space-y-2">
                             <h3 className="text-xs font-bold text-emerald-400 uppercase tracking-widest">■ DECRYPTION ACCESS GRANTED</h3>
@@ -1054,6 +1150,13 @@ export default function App() {
                           </div>
 
                           <div className="flex gap-2 justify-end">
+                            <button
+                              onClick={handleLogout}
+                              className="px-3 py-1 border border-current text-xs hover:translate-x-0.5 active:translate-y-0.5 transition-all cursor-pointer text-red-500"
+                              id="secret-logout-decrypted-btn"
+                            >
+                              [ SIGN OUT ]
+                            </button>
                             <button
                               onClick={startDecryption}
                               className="px-3 py-1 border border-current text-xs hover:translate-x-0.5 active:translate-y-0.5 transition-all cursor-pointer"
