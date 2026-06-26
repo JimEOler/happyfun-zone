@@ -504,15 +504,6 @@ export default function App() {
                           <p><span className="opacity-60">Domain Admin</span>: Jim Oler</p>
                         </div>
 
-                        <div className="mt-5 flex gap-1.5 flex-wrap">
-                          <span className="w-6 h-4 bg-red-600 inline-block"></span>
-                          <span className="w-6 h-4 bg-green-600 inline-block"></span>
-                          <span className="w-6 h-4 bg-yellow-500 inline-block"></span>
-                          <span className="w-6 h-4 bg-blue-600 inline-block"></span>
-                          <span className="w-6 h-4 bg-purple-600 inline-block"></span>
-                          <span className="w-6 h-4 bg-cyan-500 inline-block"></span>
-                          <span className="w-6 h-4 bg-slate-300 inline-block"></span>
-                        </div>
                       </div>
                     </div>
 
