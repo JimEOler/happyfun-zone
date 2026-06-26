@@ -1,6 +1,6 @@
 export type PageId = 'home' | 'about' | 'projects' | 'guestbook' | 'terminal' | 'snake';
 
-export type ThemeId = 'green-matrix' | 'phosphor-amber' | 'cyber-cyan' | 'classic-slate' | 'retro-paper';
+export type ThemeId = 'green-matrix' | 'phosphor-amber';
 
 export interface ThemeConfig {
   id: ThemeId;

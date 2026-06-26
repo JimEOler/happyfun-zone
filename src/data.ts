@@ -5,13 +5,13 @@ export const THEMES: Record<string, ThemeConfig> = {
     id: 'green-matrix',
     name: 'Matrix Green (CRT)',
     isDark: true,
-    bgClass: 'bg-black',
+    bgClass: 'bg-zinc-950',
     textClass: 'text-[#00ff41] font-mono',
-    borderClass: 'border-[#00ff41]',
+    borderClass: 'border-[#00ff41]/35',
     accentClass: 'text-[#ff00ff]',
-    cursorClass: 'bg-[#00ff41]',
+    cursorClass: 'bg-[#00ff41] shadow-[0_0_8px_#00ff41]',
     mutedClass: 'text-[#00aa2d]',
-    titleClass: 'text-[#00ff41] font-bold shadow-[0_0_10px_rgba(0,255,65,0.3)]',
+    titleClass: 'text-[#00ff41] font-bold cyber-glow-text',
     selectionClass: 'selection:bg-[#330033] selection:text-[#ff00ff]',
     gridColor: 'rgba(0, 255, 65, 0.05)'
   },
@@ -19,59 +19,36 @@ export const THEMES: Record<string, ThemeConfig> = {
     id: 'phosphor-amber',
     name: 'Amber CRT (Retro)',
     isDark: true,
-    bgClass: 'bg-[#0c0700]',
+    bgClass: 'bg-[#070500]',
     textClass: 'text-[#ffb000] font-mono',
-    borderClass: 'border-[#ffb000]',
+    borderClass: 'border-[#ffb000]/35',
     accentClass: 'text-[#fbbf24]',
-    cursorClass: 'bg-[#ffb000]',
+    cursorClass: 'bg-[#ffb000] shadow-[0_0_8px_#ffb000]',
     mutedClass: 'text-[#78350f]',
-    titleClass: 'text-[#ffb000] font-bold shadow-[0_0_10px_rgba(255,176,0,0.3)]',
+    titleClass: 'text-[#ffb000] font-bold cyber-glow-text',
     selectionClass: 'selection:bg-[#3d1900] selection:text-[#ffb000]',
     gridColor: 'rgba(255, 176, 0, 0.05)'
-  },
-  'cyber-cyan': {
-    id: 'cyber-cyan',
-    name: 'Cyberpunk Cyan',
-    isDark: true,
-    bgClass: 'bg-[#060a12]',
-    textClass: 'text-[#00f0ff] font-mono',
-    borderClass: 'border-[#00f0ff]',
-    accentClass: 'text-[#22d3ee]',
-    cursorClass: 'bg-[#00f0ff]',
-    mutedClass: 'text-[#155e75]',
-    titleClass: 'text-[#00f0ff] font-bold shadow-[0_0_10px_rgba(0,240,255,0.3)]',
-    selectionClass: 'selection:bg-[#083344] selection:text-[#00f0ff]',
-    gridColor: 'rgba(0, 240, 255, 0.05)'
-  },
-  'classic-slate': {
-    id: 'classic-slate',
-    name: 'Classic Dark Slate',
-    isDark: true,
-    bgClass: 'bg-[#0f172a]',
-    textClass: 'text-[#f1f5f9] font-mono',
-    borderClass: 'border-[#334155]',
-    accentClass: 'text-[#38bdf8]',
-    cursorClass: 'bg-[#38bdf8]',
-    mutedClass: 'text-[#475569]',
-    titleClass: 'text-[#f1f5f9] font-bold',
-    selectionClass: 'selection:bg-[#334155] selection:text-[#f1f5f9]',
-    gridColor: 'rgba(255, 255, 255, 0.02)'
-  },
-  'retro-paper': {
-    id: 'retro-paper',
-    name: 'Retro Paper Print',
-    isDark: false,
-    bgClass: 'bg-[#fdfbf7]',
-    textClass: 'text-[#1e293b] font-mono',
-    borderClass: 'border-[#475569]',
-    accentClass: 'text-[#2563eb]',
-    cursorClass: 'bg-[#1e293b]',
-    mutedClass: 'text-[#94a3b8]',
-    titleClass: 'text-[#0f172a] font-bold',
-    selectionClass: 'selection:bg-[#e2e8f0] selection:text-[#1e293b]',
-    gridColor: 'rgba(0, 0, 0, 0.02)'
   }
 };
+
+export const VGA_PALETTE = [
+  '#000000', // Black
+  '#0000aa', // Blue
+  '#00aa00', // Green
+  '#00aaaa', // Cyan
+  '#aa0000', // Red
+  '#aa00aa', // Magenta
+  '#aa5500', // Brown
+  '#aaaaaa', // Light Gray
+  '#555555', // Dark Gray
+  '#5555ff', // Light Blue
+  '#55ff55', // Light Green
+  '#55ffff', // Light Cyan
+  '#ff5555', // Light Red
+  '#ff55ff', // Light Magenta
+  '#ffff55', // Yellow
+  '#ffffff'  // White
+];
 
 export const ASCII_LOGO = `
  ██░ ██  ▄▄▄       ██▓███   ██▓███ ▓██   ██▓  ██████ █    ██  ███▄    █ ▓█████ 

@@ -21,11 +21,7 @@ export default function MatrixRain({ themeId, opacity = 0.15 }: MatrixRainProps)
     let height = (canvas.height = canvas.parentElement?.clientHeight || window.innerHeight);
 
     // Color based on active theme
-    let color = '#00ff66';
-    if (themeId === 'phosphor-amber') color = '#ffb000';
-    else if (themeId === 'cyber-cyan') color = '#00f0ff';
-    else if (themeId === 'classic-slate') color = '#cbd5e1';
-    else if (themeId === 'retro-paper') color = '#64748b';
+    const color = themeId === 'phosphor-amber' ? '#ffb000' : '#00ff41';
 
     const columns = Math.floor(width / 16);
     const drops: number[] = Array(columns).fill(1);

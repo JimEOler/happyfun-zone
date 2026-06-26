@@ -148,7 +148,7 @@ export default function Terminal({
   neofetch           Output full system specification parameters
   snake              Boot up the retro monospaced Snake arcade game
   matrix             Toggle interactive background digital rain
-  theme [style]      Configure CRT aesthetics: green | amber | cyan | slate | paper
+  theme [style]      Configure CRT aesthetics: green | retro
   clear              Purge all terminal console rows
   time               Request current synchronized local timestamp
 
@@ -300,22 +300,13 @@ You can also leave a message in the local Guestbook database!`,
         if (['green', 'matrix'].includes(requestedTheme)) {
           onThemeChange('green-matrix');
           newLines.push({ id: `out-${id}`, text: 'Aesthetics adjusted to: Matrix Green (CRT)', type: 'success', timestamp });
-        } else if (['amber', 'orange', 'yellow'].includes(requestedTheme)) {
+        } else if (['amber', 'retro', 'orange', 'yellow'].includes(requestedTheme)) {
           onThemeChange('phosphor-amber');
-          newLines.push({ id: `out-${id}`, text: 'Aesthetics adjusted to: Amber CRT (Phosphor)', type: 'success', timestamp });
-        } else if (['cyan', 'blue', 'cyber'].includes(requestedTheme)) {
-          onThemeChange('cyber-cyan');
-          newLines.push({ id: `out-${id}`, text: 'Aesthetics adjusted to: Cyberpunk Cyan', type: 'success', timestamp });
-        } else if (['slate', 'dark', 'classic'].includes(requestedTheme)) {
-          onThemeChange('classic-slate');
-          newLines.push({ id: `out-${id}`, text: 'Aesthetics adjusted to: Classic Dark Slate', type: 'success', timestamp });
-        } else if (['paper', 'light', 'white'].includes(requestedTheme)) {
-          onThemeChange('retro-paper');
-          newLines.push({ id: `out-${id}`, text: 'Aesthetics adjusted to: Retro Paper Print', type: 'success', timestamp });
+          newLines.push({ id: `out-${id}`, text: 'Aesthetics adjusted to: Amber CRT (Retro)', type: 'success', timestamp });
         } else {
           newLines.push({
             id: `err-${id}`,
-            text: `Error: Theme '${args[1] || ''}' not recognized. Use: theme [green | amber | cyan | slate | paper]`,
+            text: `Error: Theme '${args[1] || ''}' not recognized. Use: theme [green | retro]`,
             type: 'error',
             timestamp
           });
