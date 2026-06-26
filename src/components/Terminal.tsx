@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, KeyboardEvent } from 'react';
 import { TerminalLine, ThemeConfig, Project, GuestbookEntry, ThemeId } from '../types';
-import { NEOFETCH_INFO, ASCII_LOGO, PROJECTS } from '../data';
+import { NEOFETCH_INFO, PROJECTS } from '../data';
 
 interface TerminalProps {
   theme: ThemeConfig;
@@ -20,12 +20,6 @@ export default function Terminal({
   onNavigate
 }: TerminalProps) {
   const [history, setHistory] = useState<TerminalLine[]>([
-    {
-      id: 'welcome-logo',
-      text: ASCII_LOGO,
-      type: 'ascii',
-      timestamp: new Date().toLocaleTimeString()
-    },
     {
       id: 'welcome-msg',
       text: `*** WELCOME TO HAPPYFUN.ZONE SHELL v3.5 ***\nType 'help' to see available commands or click sidebar directories.\n`,
