@@ -1,4 +1,4 @@
-export type PageId = 'home' | 'about' | 'projects' | 'guestbook' | 'terminal' | 'snake';
+export type PageId = 'home' | 'about' | 'projects' | 'guestbook' | 'terminal' | 'snake' | 'secret';
 
 export type ThemeId = 'green-matrix' | 'phosphor-amber';
 

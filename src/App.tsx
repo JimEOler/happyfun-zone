@@ -20,7 +20,8 @@ import {
   Moon,
   Sun,
   Eye,
-  EyeOff
+  EyeOff,
+  Lock
 } from 'lucide-react';
 import { PageId, ThemeId, GuestbookEntry, Project } from './types';
 import { THEMES, INITIAL_GUESTBOOK, PROJECTS, BIOGRAPHY_MARKDOWN, ASCII_LOGO, VGA_PALETTE } from './data';
@@ -61,6 +62,50 @@ export default function App() {
   const [activeColor, setActiveColor] = useState('#00ff66');
   const [synthOscType, setSynthOscType] = useState<OscillatorType>('sine');
   const [synthOctave, setSynthOctave] = useState<number>(4);
+
+  // Secret Decryption States
+  const [decryptProgress, setDecryptProgress] = useState(0);
+  const [decrypting, setDecrypting] = useState(false);
+  const [decrypted, setDecrypted] = useState(false);
+
+  useEffect(() => {
+    let intervalId: any;
+    if (decrypting) {
+      intervalId = setInterval(() => {
+        setDecryptProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(intervalId);
+            setDecrypting(false);
+            setDecrypted(true);
+            // Play success chime
+            setTimeout(() => {
+              playClickSound(523.25, 0.1, 'sine'); // C5
+              setTimeout(() => {
+                playClickSound(659.25, 0.1, 'sine'); // E5
+                setTimeout(() => {
+                  playClickSound(783.99, 0.25, 'sine'); // G5
+                }, 100);
+              }, 100);
+            }, 50);
+            return 100;
+          }
+          const next = prev + Math.floor(Math.random() * 8) + 4;
+          const capped = next > 100 ? 100 : next;
+          // Play click/bleep
+          playClickSound(1000 + capped * 10, 0.03, 'sine');
+          return capped;
+        });
+      }, 120);
+    }
+    return () => clearInterval(intervalId);
+  }, [decrypting]);
+
+  const startDecryption = () => {
+    handleActionClick();
+    setDecryptProgress(0);
+    setDecrypted(false);
+    setDecrypting(true);
+  };
 
   // Active theme configuration
   const theme = THEMES[themeId] || THEMES['green-matrix'];
@@ -249,7 +294,8 @@ export default function App() {
     { id: 'projects', label: 'Projects', icon: FolderGit2 },
     { id: 'guestbook', label: 'Guestbook', icon: BookOpen },
     { id: 'snake', label: 'System_Snake', icon: Gamepad2 },
-    { id: 'terminal', label: 'TUI_Terminal', icon: TerminalIcon }
+    { id: 'terminal', label: 'TUI_Terminal', icon: TerminalIcon },
+    { id: 'secret', label: 'SUPER_SECRET', icon: Lock }
   ];
 
   return (
@@ -915,6 +961,110 @@ export default function App() {
                       onToggleMatrix={() => setMatrixEnabled(!matrixEnabled)}
                       onNavigate={(pId) => setActivePage(pId as PageId)}
                     />
+                  </div>
+                </div>
+              )}
+
+              {/* PAGE: SUPER_SECRET */}
+              {activePage === 'secret' && (
+                <div className={`relative overflow-hidden ${theme.isDark ? 'bg-zinc-900 border-2 bevel-out solid-shadow' : `border p-4 md:p-6 ${theme.borderClass}`} space-y-6`} id="view-secret">
+                  <div className="p-4 md:p-6 space-y-6">
+                    <div className="flex items-center gap-2 border-b border-current/25 pb-2 mb-2 justify-between">
+                      <div className="flex items-center gap-2">
+                        <Lock size={16} />
+                        <h2 className="text-sm font-bold uppercase tracking-wider font-display">SUPER_SECRET MAIN_MAINFRAME</h2>
+                      </div>
+                      <button
+                        onClick={() => { handleActionClick(); setActivePage('home'); }}
+                        className="text-[10px] hover:underline cursor-pointer"
+                        id="secret-btn-exit"
+                      >
+                        [ EXIT ]
+                      </button>
+                    </div>
+
+                    <div className="space-y-4">
+                      {!decrypted && !decrypting && (
+                        <div className="p-6 text-center border-2 border-dashed border-current/25 rounded space-y-4 bg-black/10">
+                          <h3 className="text-base font-bold font-display uppercase tracking-widest text-red-500">■ ENCRYPTED DATA CORRIDOR</h3>
+                          <p className="text-xs max-w-md mx-auto opacity-75">
+                            Warning: Unauthorized extraction of cryptographic records from this server is prohibited. Authenticate terminal access key.
+                          </p>
+                          <button
+                            onClick={startDecryption}
+                            className="px-4 py-2 border-2 bevel-out font-bold text-xs hover:translate-x-0.5 active:translate-y-0.5 active:bg-black/25 active:bevel-in transition-all cursor-pointer font-display"
+                            id="decrypt-btn"
+                          >
+                            [ INITIATE DECRYPTION ROUTINE ]
+                          </button>
+                        </div>
+                      )}
+
+                      {decrypting && (
+                        <div className="p-6 border-2 border-current/20 rounded bg-black/20 space-y-4">
+                          <div className="flex justify-between text-xs font-bold font-display">
+                            <span className="animate-pulse">DECRYPTING CLASSIFIED RECORDS...</span>
+                            <span>{decryptProgress}%</span>
+                          </div>
+                          {/* 16-bit text progress bar */}
+                          <div className={`p-1 bg-black/30 ${theme.isDark ? 'bevel-in' : 'border border-current'}`}>
+                            <div
+                              className={`h-4 ${theme.isDark ? 'bg-emerald-500' : 'bg-current'} transition-all duration-75`}
+                              style={{ width: `${decryptProgress}%` }}
+                            />
+                          </div>
+                          <div className="text-[10px] opacity-50 font-mono space-y-1">
+                            <p>&gt; SECURE PORT AUTH: OPEN</p>
+                            <p>&gt; RUNNING BLOWFISH-128 DECRYPT VECTOR {decryptProgress > 25 ? '...' : ''}</p>
+                            {decryptProgress > 50 && <p>&gt; BYPASSING CENTRAL FIREWALL SECURITY DECK...</p>}
+                            {decryptProgress > 75 && <p>&gt; EXTRACTING LOCAL ARCHIVE LEDGER...</p>}
+                          </div>
+                        </div>
+                      )}
+
+                      {decrypted && (
+                        <div className="space-y-6 animate-fadeIn">
+                          <div className="p-4 border-2 border-emerald-500/30 rounded bg-emerald-950/10 space-y-2">
+                            <h3 className="text-xs font-bold text-emerald-400 uppercase tracking-widest">■ DECRYPTION ACCESS GRANTED</h3>
+                            <p className="text-[11px] opacity-75">
+                              Cryptographic key matches. Classification: LEVEL-5 (Eyes Only). Showing cached archive payload:
+                            </p>
+                          </div>
+
+                          <div className={`p-4 font-mono text-xs space-y-4 rounded bg-black/25 ${theme.isDark ? 'bevel-in' : 'border border-current'}`}>
+                            <div className="border-b border-current/15 pb-2">
+                              <span className="font-bold text-yellow-500 font-display text-sm tracking-wider">CLASSIFIED MEMO: PROJECT ANTIGRAVITY</span>
+                              <span className="float-right opacity-50">DATE: 06-25-2026</span>
+                            </div>
+                            
+                            <p className="leading-relaxed">
+                              This sandbox environment was authorized to run experimental Single Page App configurations. 
+                              The 16-bit aesthetic was implemented under supervision of developer <strong>James Edward Oler</strong> (Admin Core).
+                            </p>
+                            
+                            <p className="leading-relaxed">
+                              <span className="text-red-500 font-bold">WARNING:</span> Antigravity physics modules are active in this workspace. 
+                              Keep boots grounded and avoid turning off your monitors while sound synthesis units are oscillating at maximum harmonics.
+                            </p>
+
+                            <div className="border-t border-current/15 pt-2 flex justify-between text-[10px] opacity-50">
+                              <span>COGNIZANT AGENCY: CISA SPECIAL SERVICES</span>
+                              <span>STATUS: SECURED</span>
+                            </div>
+                          </div>
+
+                          <div className="flex gap-2 justify-end">
+                            <button
+                              onClick={startDecryption}
+                              className="px-3 py-1 border border-current text-xs hover:translate-x-0.5 active:translate-y-0.5 transition-all cursor-pointer"
+                              id="decrypt-retry-btn"
+                            >
+                              [ RE-DECRYPT ARCHIVE ]
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}
